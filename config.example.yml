@@ -1,0 +1,22 @@
+#MQTT
+#If the section does not exist, MQTT service will not be started
+#Therefore, the program will quit
+mqtt:
+  #Broker has no default and must be provided
+  broker: '192.168.1.1'
+  #If username is defined, both username and password must be defined
+  username: 'user'
+  password: 'pass'
+  #The remaining fields have the defaults shown below
+  port: 1883
+  prefix: 'tags'
+
+#Cameras
+#This is an array. Defaults are listed if applicable.
+cameras:
+    #Name and URL have no default and must be provided
+  - name: 'Camera 1'
+    url: "rtsp://url:554/path"
+    #The remainder of the fields have the defaults shown below
+    tag: 'tag36h11'
+    framerate: 1
