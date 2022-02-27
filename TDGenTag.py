@@ -10,7 +10,7 @@ import random
 
 def printHelp():
     print('Usage:')
-    print('STGenTag.py -f <family> -o <output> -i <id> -d -r <factor')
+    print('TDGenTag.py -f <family> -o <output> -i <id> -d -r <factor')
     print("Family is one of:")
     for tag in TagFamilies.keys():
         print("    ",tag)
