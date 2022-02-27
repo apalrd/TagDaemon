@@ -167,7 +167,12 @@ class TDCameraDecoder():
 
                     #Publish status data to MQTT as well
                     if self.MqttClient is not None:
-                        self.MqttClient.publish("status/"+self.Name,json.dumps(self.CStatus))
+                        self.MqttClient.publish(self.Name+"/status",json.dumps(self.CStatus))
+
+                    #Publish JPEG version
+                    ImSuccess,ImJpeg = cv2.imencode(".jpeg",self.ImageColor)
+                    if ImSuccess:
+                        self.MqttClient.publish(self.Name+"/snap",ImJpeg)
 
                 #On normal loop termination, release VCap
                 print("CAM: Cleaning up capture for",self.Name)
