@@ -68,7 +68,7 @@ class TDCameraDecoder():
         while(self.Run):
             #Start video capture, catch errors
             try:
-                print("CAM: Starting VideoCapture for camera",self.Name,"at address",self.URL)
+                print("CAM: Starting VideoCapture for camera",self.Name)
                 VCap = cv2.VideoCapture(self.URL,cv2.CAP_FFMPEG)
                 #Set buffer size small
                 VCap.set(cv2.CAP_PROP_BUFFERSIZE,1)
@@ -165,14 +165,15 @@ class TDCameraDecoder():
                         'Codec':codec
                     }
 
-                    #Publish status data to MQTT as well
+                    #Check if MQTT client is valid
                     if self.MqttClient is not None:
+                        #Publish status data
                         self.MqttClient.publish(self.Name+"/status",json.dumps(self.CStatus))
 
-                    #Publish JPEG version
-                    ImSuccess,ImJpeg = cv2.imencode(".jpeg",self.ImageColor)
-                    if ImSuccess:
-                        self.MqttClient.publish(self.Name+"/snap",ImJpeg)
+                        #Publish JPEG version
+                        ImSuccess,ImJpeg = cv2.imencode(".jpeg",self.ImageColor)
+                        if ImSuccess:
+                            self.MqttClient.publish(self.Name+"/snap",np.array(ImJpeg).tostring())
 
                 #On normal loop termination, release VCap
                 print("CAM: Cleaning up capture for",self.Name)
