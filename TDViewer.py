@@ -12,7 +12,7 @@ import getopt
 #Help description
 def printHelp():
     print('Usage:')
-    print('TDViewer.py -b <broker address> -u <broker username> -p <broker password> -r <broker port>')
+    print('TDViewer.py -b <broker address> -u <broker username> -p <broker password> -r <broker port> -v <prefix>')
     exit(2)
 
 
@@ -21,8 +21,9 @@ broker = None
 user = None
 passwd = None
 port = 1883
+prefix = "tags"
 try:
-    opts, args = getopt.getopt(sys.argv[1:],"b:u:p:r:",["broker=","user=","pass=","port="])
+    opts, args = getopt.getopt(sys.argv[1:],"b:u:p:r:",["broker=","user=","pass=","port=","prefix="])
 except getopt.GetoptError:
     printHelp()
 for opt,arg in opts:
@@ -34,6 +35,8 @@ for opt,arg in opts:
         passwd = arg
     elif opt in ("-r","--port"):
         port = int(arg)
+    elif opt in ("-v","--prefix"):
+        prefix = arg
 
 if broker is None:
     print("Broker address not provided!")
