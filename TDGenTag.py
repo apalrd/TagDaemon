@@ -89,8 +89,8 @@ if selected >= TagFamilies[fname]['count']:
     printHelp()
 
 
-# Import image
-mosaic = cv2.imread("./static/"+fname+".png")
+# Import image with alpha channel
+mosaic = cv2.imread("./static/"+fname+".png",cv2.IMREAD_UNCHANGED)
 shape = mosaic.shape
 print("Image shape is",shape)
 
@@ -116,9 +116,16 @@ coff = col * stride
 print("Roff",roff,"Coff",coff)
 subset = mosaic[roff:(roff+width),coff:(coff+width)]
 
+#Replace zero-alpha with white instead of black
+alpha = (255 - subset[:,:,3])
+#Extract one color (it's black and white, so any color)
+color = subset[:,:,2]
+color += alpha
+#color is now a single channel image with white where alpha was
+
 #Write file
 print("Rescale by factor of",rescale)
-output = cv2.resize(subset,(width*rescale,width*rescale),interpolation=cv2.INTER_NEAREST)
+output = cv2.resize(color,(width*rescale,width*rescale),interpolation=cv2.INTER_NEAREST)
 cv2.imwrite(outfile,output)
 
 #Display image
